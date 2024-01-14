@@ -3,13 +3,17 @@
     "description": "This is package is use to create laravel package skeleton",
     "license": "MIT",
     "type": "library",
+    "keywords": [
+        "laravel",
+        "package",
+        "generator"
+    ],
     "authors": [
         {
             "name": "Binay Kumar",
             "email": "binay.cs@gmail.com"
         }
     ],
-
     "require": {
         "php": "^8.1.1",
         "laravel/framework": "^10.10"
@@ -32,5 +36,10 @@
 
             }
         }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
     }
 }
