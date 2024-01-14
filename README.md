@@ -1,1 +1,1 @@
-# laravel-package-generator
+# Laravel Package and Artisan Class Generator
