@@ -1,0 +1,30 @@
+{
+    "name": "$PACKAGE_NAME$",
+    "description": "$PACKAGE_DESCRIPTION$",
+    "license": "private",
+    "require": {
+        "php": "^$PHP_VERSION$"
+    },
+    "autoload": {
+        "psr-4": {
+            "$PACKAGE_NAMESPACE$" : "src/",
+            "$PACKAGE_NAMESPACE$Database\\Factories\\" : "database/factories/",
+            "$PACKAGE_NAMESPACE$Database\\Seeders\\" : "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "$PACKAGE_NAMESPACE$Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "$PACKAGE_NAMESPACE$Providers\\$PROVIDER_NAME$ServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "name": "hi2binay/laravel-package-generator",
+    "description": "This is package description",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Binay Kumar",
+            "email": "binay.cs@gmail.com"
+        }
+    ],
+
+    "require": {
+        "php": "^8.1.1",
+        "laravel/framework": "^10.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "BKP\\LaravelPackageGenerator\\" : "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BKP\\LaravelPackageGenerator\\LaravelPackageGeneratorServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    }
+}

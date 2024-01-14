@@ -1,0 +1,6 @@
+<?php
+use Illuminate\Support\Facades\Route;
+
+Route::group(['middleware' => ['web','$LOWER_NAME$'], 'prefix' => '$LOWER_NAME$', 'namespace' => '$CONTROLLER_CLASS_NAME$', 'as' => '$LOWER_NAME$.'], function () {
+
+});

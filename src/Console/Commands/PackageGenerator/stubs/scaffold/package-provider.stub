@@ -1,0 +1,55 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Event;
+
+class $CLASS$ extends ServiceProvider
+{
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+
+        $this->loadRoutesFrom(__DIR__ . '/../../routes/web.php');
+
+         $this->loadRoutesFrom(__DIR__.'/../../routes/api.php');
+
+        $this->loadTranslationsFrom(__DIR__ . '/../lang', '$LOWER_NAME$');
+
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views', '$LOWER_NAME$');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+
+            ]);
+        }
+    }
+
+    /**
+     * Register services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->registerConfig();
+    }
+
+    /**
+     * Register package config.
+     *
+     * @return void
+     */
+    protected function registerConfig()
+    {
+        $this->mergeConfigFrom(
+            dirname(__DIR__) . '/../config/local.php', '$LOWER_NAME$'
+        );
+    }
+}
