@@ -1,6 +1,6 @@
 {
     "name": "hi2binay/laravel-package-generator",
-    "description": "This is package description",
+    "description": "This is package is use to create laravel package skeleton",
     "license": "MIT",
     "type": "library",
     "authors": [
