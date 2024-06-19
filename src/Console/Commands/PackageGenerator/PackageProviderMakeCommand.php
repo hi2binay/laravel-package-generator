@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\PackageGenerator;
+namespace BKP\LaravelPackageGenerator\Console\Commands\PackageGenerator;
 
 
 class PackageProviderMakeCommand extends MakeCommand
