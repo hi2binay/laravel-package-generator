@@ -215,7 +215,7 @@ class Generator
 
             $this->createClasses();
 
-            $this->setServiceProvider();
+           // $this->setServiceProvider();
         }
 
         $this->updateComposer();
@@ -267,15 +267,15 @@ class Generator
     public function createClasses(): void
     {
         if ($this->type == 'package') {
-            $this->console->call('package:make-provider', [
-                'name' => $this->packageName . 'ServiceProvider',
+            $this->console->call('package:provider', [
+                'name' => $this->packageName.'ServiceProvider',
                 'package' => $this->packageName,
             ]);
 
             $this->console->call('package:make-route', [
                 'package' => $this->packageName
             ]);
-            $this->console->call('package:make-controller', [
+            $this->console->call('package:controller', [
                 'package' => $this->packageName,
                 'name' => 'Controller'
             ]);

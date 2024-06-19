@@ -35,6 +35,7 @@ class PackageRouteMakeCommand extends MakeCommand
         return [
             'CONTROLLER_CLASS_NAME' => $this->getClassNamespace($this->argument('package') . '/Http/Controllers/' . $this->getStudlyName() . 'Controller'),
             'LOWER_NAME' => $this->getLowerName(),
+            'PACKAGE_NAMESPACE' =>$this->getStudlyName()
         ];
     }
 

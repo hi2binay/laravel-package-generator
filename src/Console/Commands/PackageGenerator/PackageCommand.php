@@ -21,22 +21,13 @@ class PackageCommand extends MakeCommand
 
     /**
      * Execute the console command.
-     * @return bool
      */
-    public function handle(): bool
+    public function handle(): void
     {
-        $package = $this->argument('package');
-        if(empty($package)) {
-            $this->error("Package name missing");
-            return false;
-        }
-
         $this->packageGenerator->setConsole($this)
-            ->setPackage($package)
+            ->setPackage($this->argument('package'))
             ->setPlain($this->option('plain'))
             ->setForce($this->option('force'))
             ->generate();
-
-        return true;
     }
 }
