@@ -10,7 +10,7 @@ class PackageRouteMakeCommand extends MakeCommand
      *
      * @var string
      */
-    protected $signature = 'package:make-route {package} {--force}';
+    protected $signature = 'package:route {package} {--force}';
 
     /**
      * The console command description.

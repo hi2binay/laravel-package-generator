@@ -272,7 +272,7 @@ class Generator
                 'package' => $this->packageName,
             ]);
 
-            $this->console->call('package:make-route', [
+            $this->console->call('package:route', [
                 'package' => $this->packageName
             ]);
             $this->console->call('package:controller', [
