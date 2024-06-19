@@ -20,6 +20,8 @@ use BKP\LaravelPackageGenerator\Console\Commands\PackageGenerator\{CastMakeComma
     NotificationMakeCommand,
     ObserverMakeCommand,
     PackageCommand,
+    PackageProviderMakeCommand,
+    PackageControllerMakeCommand,
     PackageRouteMakeCommand,
     PolicyMakeCommand,
     ProviderMakeCommand,
@@ -47,6 +49,8 @@ class LaravelPackageGeneratorServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 PackageCommand::class,
+                PackageProviderMakeCommand::class,
+                PackageControllerMakeCommand::class,
                 PackageRouteMakeCommand::class,
                 CastMakeCommand::class,
                 ChannelMakeCommand::class,
