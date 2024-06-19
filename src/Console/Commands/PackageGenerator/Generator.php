@@ -1,6 +1,6 @@
 <?php
 
-namespace BKP\LaravelPackageGenerator\Console\Commands\PackageGenerator;
+namespace App\Console\Commands\PackageGenerator;
 
 use Illuminate\Config\Repository as Config;
 use Illuminate\Console\Command;
@@ -267,15 +267,15 @@ class Generator
     public function createClasses(): void
     {
         if ($this->type == 'package') {
-            $this->console->call('package:provider', [
+            $this->console->call('package:make-provider', [
                 'name' => $this->packageName.'ServiceProvider',
                 'package' => $this->packageName,
             ]);
 
-            $this->console->call('package:route', [
+            $this->console->call('package:make-route', [
                 'package' => $this->packageName
             ]);
-            $this->console->call('package:controller', [
+            $this->console->call('package:make-controller', [
                 'package' => $this->packageName,
                 'name' => 'Controller'
             ]);
