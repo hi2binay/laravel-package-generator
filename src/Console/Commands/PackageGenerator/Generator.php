@@ -215,7 +215,7 @@ class Generator
 
             $this->createClasses();
 
-           // $this->setServiceProvider();
+            $this->setServiceProvider();
         }
 
         $this->updateComposer();
@@ -318,7 +318,7 @@ class Generator
         $path = base_path('/composer.json');
         if (file_exists($path)) {
             $d = json_decode(file_get_contents($path), true);
-            $d['autoload']['psr-4'][$this->packageName . '\\'] = 'packages/' . str_replace('\\', '/', $this->packageName) . '/src';
+            $d['autoload']['psr-4'][$this->packageName . '\\'] = 'packages/' . str_replace('\\', '/', $this->packageName) . '/src/';
             $this->filesystem->put($path, json_encode($d, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
             $this->package->composer->dumpAutoloads();
         }
