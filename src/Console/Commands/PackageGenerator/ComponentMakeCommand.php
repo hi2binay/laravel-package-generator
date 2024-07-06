@@ -35,7 +35,7 @@ class ComponentMakeCommand extends \Illuminate\Foundation\Console\ComponentMakeC
      */
     protected function viewPath($path = '')
     {
-        $views = base_path('/packages/' . $this->argument('package') . '/resources/views');
+        $views = base_path('/packages/' . $this->packageDir . '/resources/views');
 
         return $views . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }

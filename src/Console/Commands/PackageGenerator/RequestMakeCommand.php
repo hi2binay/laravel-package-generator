@@ -1,6 +1,7 @@
 <?php
 
 namespace BKP\LaravelPackageGenerator\Console\Commands\PackageGenerator;
+use Illuminate\Support\Str;
 
 class RequestMakeCommand extends \Illuminate\Foundation\Console\RequestMakeCommand
 {
@@ -25,7 +26,7 @@ class RequestMakeCommand extends \Illuminate\Foundation\Console\RequestMakeComma
      */
     protected function rootNamespace(): string
     {
-        return $this->argument('package') . '\\';
+        return Str::studly(str_replace('-',' ', trim($this->argument('package')))) . '\\';
     }
 
     /**
@@ -45,8 +46,8 @@ class RequestMakeCommand extends \Illuminate\Foundation\Console\RequestMakeComma
      */
     protected function getPath($name)
     {
-
-        $path = base_path('packages/' . $this->argument('package')) . '/src/Http/Requests';
+        $pkg_dir = Str::kebab(str_replace('-',' ', trim($this->argument('package'))));
+        $path = base_path('packages/' . $pkg_dir) . '/src/Http/Requests';
 
         return $path . '/' . $this->argument('name') . '.php';
     }

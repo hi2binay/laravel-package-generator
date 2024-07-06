@@ -33,7 +33,7 @@ class TestCaseMakeCommand extends MakeCommand
     protected function getStubVariables()
     {
         return [
-            'NAMESPACE' => $this->getClassNamespace($this->argument('package') . '/Tests'),
+            'NAMESPACE' => $this->getClassNamespace($this->packageNamespace . '/Tests'),
             'LOWER_NAME' => $this->getLowerName(),
         ];
     }
@@ -43,7 +43,7 @@ class TestCaseMakeCommand extends MakeCommand
      */
     protected function getSourceFilePath()
     {
-        $path = base_path('packages/' . $this->argument('package')) . '/tests';
+        $path = base_path('packages/' . $this->packageFolder) . '/tests';
 
         return $path . '/TestCase.php';
     }

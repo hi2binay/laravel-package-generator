@@ -1,6 +1,7 @@
 <?php
 
 namespace BKP\LaravelPackageGenerator\Console\Commands\PackageGenerator;
+use Illuminate\Support\Str;
 
 class ViewMakeCommand extends \Illuminate\Foundation\Console\ViewMakeCommand
 {
@@ -39,7 +40,8 @@ class ViewMakeCommand extends \Illuminate\Foundation\Console\ViewMakeCommand
      */
     protected function viewPath($path = '')
     {
-        $views = base_path('/packages/' . $this->argument('package') . '/resources/views');
+        $pkg_dir = Str::kebab(str_replace('-',' ', trim($this->argument('package'))));
+        $views = base_path('/packages/' . $pkg_dir . '/resources/views');
 
         return $views . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }

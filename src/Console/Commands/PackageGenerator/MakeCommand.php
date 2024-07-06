@@ -4,6 +4,7 @@ namespace BKP\LaravelPackageGenerator\Console\Commands\PackageGenerator;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 
 class MakeCommand extends Command
 {
@@ -36,6 +37,24 @@ class MakeCommand extends Command
     protected Generator $packageGenerator;
 
     /**
+     * The package name
+     *
+     * @var string
+     */
+    protected string $packageName;
+
+    /**
+     * Package folder name
+     * @var string
+     */
+    protected $packageFolder = null;
+
+    /**
+     * Package namespace
+     */
+    protected $packageNamespace = null;
+
+    /**
      * Create a new command instance.
      *
      * @param Filesystem $filesystem
@@ -53,11 +72,27 @@ class MakeCommand extends Command
         parent::__construct();
     }
 
+     /**
+     * Configure package settings.
+     *
+     * @param string $packageName
+     * @return void
+     */
+    public function configurePackage($packageName)
+    {
+        $this->packageName = $packageName;
+        $this->packageNamespace = Str::studly($packageName);
+        $this->packageFolder = Str::kebab($this->packageName);
+        
+    }
+
     /**
      * Execute the console command.
      */
     public function handle(): void
     {
+        $this->configurePackage(trim($this->argument('package')));
+
         $path = $this->getSourceFilePath();
 
         if (!$this->filesystem->isDirectory($dir = dirname($path))) {
@@ -88,7 +123,7 @@ class MakeCommand extends Command
      */
     public function getStudlyName(): string
     {
-        return class_basename($this->argument('package'));
+        return class_basename($this->packageNamespace);
     }
 
     /**
@@ -96,7 +131,7 @@ class MakeCommand extends Command
      */
     protected function getLowerName(): string
     {
-        return strtolower(class_basename($this->argument('package')));
+        return strtolower(class_basename($this->packageNamespace));
     }
 
     /**

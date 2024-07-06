@@ -14,7 +14,14 @@ class CommandMakeCommand extends ConsoleMakeCommand
      *
      * @var string
      */
-    protected $signature = 'package:command {package} {name} {--command=}{--force}';
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'package:command {package} {name} {--command=} {--test} {--pest} {--force}';
+
+    protected $description = 'Create new command for package';
 
 
 }

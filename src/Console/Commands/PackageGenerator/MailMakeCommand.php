@@ -13,7 +13,7 @@ class MailMakeCommand extends \Illuminate\Foundation\Console\MailMakeCommand
      *
      * @var string
      */
-    protected $signature = 'package:mail {package} {name} {--markdown=} {--force}';
+    protected $signature = 'package:mail {package} {name} {--markdown=} {--view} {--force}';
 
 
 }

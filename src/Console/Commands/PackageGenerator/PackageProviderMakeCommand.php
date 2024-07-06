@@ -35,7 +35,7 @@ class PackageProviderMakeCommand extends MakeCommand
     protected function getStubVariables()
     {
         return [
-            'NAMESPACE' => $this->getClassNamespace($this->argument('package') . '/Providers'),
+            'NAMESPACE' => $this->getClassNamespace($this->packageNamespace . '/Providers'),
             'CLASS' => $this->getClassName(),
             'LOWER_NAME' => $this->getLowerName(),
         ];
@@ -46,7 +46,7 @@ class PackageProviderMakeCommand extends MakeCommand
      */
     protected function getSourceFilePath()
     {
-        $path = base_path('packages/' . $this->argument('package')) . '/src/Providers';
+        $path = base_path('packages/' . $this->packageFolder) . '/src/Providers';
 
         return $path . '/' . $this->getClassName() . '.php';
     }

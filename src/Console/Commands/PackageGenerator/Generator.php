@@ -5,22 +5,30 @@ namespace BKP\LaravelPackageGenerator\Console\Commands\PackageGenerator;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
+use Illuminate\Support\ServiceProvider;
 
 class Generator
 {
-    /**
-     * The package vendor namespace
-     *
-     * @var string
-     */
-    protected string $vendorNamespace;
-
+   
     /**
      * The package name
      *
      * @var string
      */
     protected string $packageName;
+
+    /**
+     * Package folder name
+     * @var string
+     */
+    protected $packageFolder = null;
+
+    /**
+     * Package namespace
+     */
+    protected $packageNamespace = null;
 
     /**
      * Repository object
@@ -42,22 +50,7 @@ class Generator
      * @var Package
      */
     protected Package $package;
-
-    /**
-     * @var boolean
-     */
-    protected bool $plain;
-
-    /**
-     * @var boolean
-     */
-    protected bool $force;
-
-    /**
-     * @var boolean
-     */
-    protected string|bool $type = 'package';
-
+   
     /**
      * Contains subs files information
      *
@@ -71,6 +64,11 @@ class Generator
         ],
     ];
 
+    /**
+     * Package type
+     */
+    protected $type='package';
+    
     /**
      * Contains package file paths for creation
      *
@@ -140,54 +138,17 @@ class Generator
     }
 
     /**
-     * Set package.
+     * Configure package settings.
      *
      * @param string $packageName
      * @return Generator
      */
-    public function setPackage(string $packageName): static
+    public function configurePackage(string $packageName): static
     {
         $this->packageName = $packageName;
-
-        return $this;
-    }
-
-    /**
-     * Set package plain.
-     *
-     * @param string $plain
-     * @return Generator
-     */
-    public function setPlain(string $plain): static
-    {
-        $this->plain = $plain;
-
-        return $this;
-    }
-
-    /**
-     * Set force status.
-     *
-     * @param boolean $force
-     * @return Generator
-     */
-    public function setForce(bool $force): static
-    {
-        $this->force = $force;
-
-        return $this;
-    }
-
-    /**
-     * Set type status.
-     *
-     * @param $type
-     * @return Generator
-     */
-    public function setType($type): static
-    {
-        $this->type = $type;
-
+        $this->packageNamespace = Str::studly($packageName);
+        $this->packageFolder = Str::kebab($this->packageName);
+        
         return $this;
     }
 
@@ -198,25 +159,22 @@ class Generator
      */
     public function generate(): void
     {
-        if ($this->package->has($this->packageName)) {
-            if ($this->force) {
-                $this->package->delete($this->packageName);
-            } else {
-                $this->console->error("Package '{$this->packageName}' already exist !");
+       
 
-                return;
-            }
+        if ($this->package->has($this->packageFolder)) {
+            $this->console->error("Package '{$this->packageName}' already exist !");
+            return;
         }
+
+        $this->console->info("Package '{$this->packageName}' creation started ");
 
         $this->createFolders();
+        
+        $this->createFiles();
 
-        if (!$this->plain) {
-            $this->createFiles();
+        $this->createClasses();
 
-            $this->createClasses();
-
-            $this->setServiceProvider();
-        }
+        $this->setServiceProvider();
 
         $this->updateComposer();
 
@@ -231,7 +189,7 @@ class Generator
     public function createFolders(): void
     {
         foreach ($this->paths[$this->type] as $key => $folder) {
-            $path = base_path('packages/' . $this->packageName . '/src') . '/' . $folder;
+            $path = base_path('packages/' . $this->packageFolder . '/src') . '/' . $folder;
 
             $this->filesystem->makeDirectory($path, 0755, true);
         }
@@ -247,7 +205,7 @@ class Generator
         $variables = $this->getStubVariables();
 
         foreach ($this->stubFiles[$this->type] as $stub => $file) {
-            $path = base_path('packages/' . $this->packageName . '/src') . '/' . $file;
+            $path = base_path('packages/' . $this->packageFolder . '/src') . '/' . $file;
 
             if (!$this->filesystem->isDirectory($dir = dirname($path))) {
                 $this->filesystem->makeDirectory($dir, 0775, true);
@@ -268,7 +226,7 @@ class Generator
     {
         if ($this->type == 'package') {
             $this->console->call('package:make-provider', [
-                'name' => $this->packageName.'ServiceProvider',
+                'name' => $this->packageNamespace.'ServiceProvider',
                 'package' => $this->packageName,
             ]);
 
@@ -304,9 +262,15 @@ class Generator
         $searchFor = '/* * Customer Service Providers */';
         $customProviders = strpos($file, $searchFor);
         if ($customProviders) {
-            $newFile = substr_replace($file, $searchFor . "\n\t\t" . $this->packageName . '\\Providers\\' . basename($this->packageName) . 'ServiceProvider::class,', $customProviders, strlen($searchFor));
+            $newFile = substr_replace($file, $searchFor . "\n\t\t" . $this->packageNamespace . '\\Providers\\' . basename($this->packageNamespace) . 'ServiceProvider::class,', $customProviders, strlen($searchFor));
             file_put_contents($path, $newFile);
-        }
+
+        } 
+
+        ServiceProvider::addProviderToBootstrapFile(
+            $this->packageNamespace.'\\Providers\\'.$this->packageNamespace.'ServiceProvider',
+            base_path('/bootstrap/providers.php'),
+        );
     }
 
     /**
@@ -318,7 +282,7 @@ class Generator
         $path = base_path('/composer.json');
         if (file_exists($path)) {
             $d = json_decode(file_get_contents($path), true);
-            $d['autoload']['psr-4'][$this->packageName . '\\'] = 'packages/' . str_replace('\\', '/', $this->packageName) . '/src/';
+            $d['autoload']['psr-4'][$this->packageNamespace . '\\'] = 'packages/' . $this->packageFolder . '/src/';
             $this->filesystem->put($path, json_encode($d, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
             $this->package->composer->dumpAutoloads();
         }
@@ -330,11 +294,11 @@ class Generator
     protected function getStubVariables(): array
     {
         return [
-            'LOWER_NAME' => $this->getLowerName(),
-            'CAPITALIZE_NAME' => $this->getCapitalizeName(),
-            'PACKAGE' => $this->getClassNamespace($this->packageName),
+            'LOWER_NAME' => str_replace('-','',$this->packageFolder),
+            'CAPITALIZE_NAME' => $this->packageNamespace,
+            'PACKAGE' => $this->getClassNamespace($this->packageNamespace),
             'CLASS' => $this->getClassName(),
-        ];
+        ];                     
     }
 
     /**
@@ -342,7 +306,7 @@ class Generator
      */
     protected function getClassName(): string
     {
-        return class_basename($this->packageName);
+        return class_basename($this->packageNamespace);
     }
 
     /**
@@ -373,20 +337,5 @@ class Generator
 
         return $contents;
     }
-
-    /**
-     * @return string
-     */
-    protected function getCapitalizeName(): string
-    {
-        return ucwords(class_basename($this->packageName));
-    }
-
-    /**
-     * @return string
-     */
-    protected function getLowerName(): string
-    {
-        return strtolower(class_basename($this->packageName));
-    }
+    
 }

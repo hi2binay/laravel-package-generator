@@ -31,13 +31,13 @@ class MakeComposerCommand extends MakeCommand
      */
     protected function getStubVariables()
     {
-        $package = trim($this->argument('package'));
+
         return [
-            'PACKAGE_NAME' => 'bkp/' . strtolower($this->getClassNamespace($package)),
-            'PACKAGE_NAMESPACE' => $this->getClassNamespace(str_replace('\\', '\\\\', $package) . '\\\\'),
+            'PACKAGE_NAME' => 'bkp/' .$this->packageFolder,
+            'PACKAGE_NAMESPACE' => $this->getClassNamespace(str_replace('\\', '\\\\', $this->packageNamespace) . '\\\\'),
             'PHP_VERSION' => PHP_VERSION,
             'PACKAGE_DESCRIPTION' => 'This is package description',
-            'PROVIDER_NAME' => basename($package)
+            'PROVIDER_NAME' => basename($this->packageNamespace)
         ];
     }
 
@@ -46,7 +46,7 @@ class MakeComposerCommand extends MakeCommand
      */
     protected function getSourceFilePath()
     {
-        $path = base_path('packages/' . $this->argument('package'));
+        $path = base_path('packages/' . $this->packageFolder);
 
         return $path . '/' . 'composer.json';
     }

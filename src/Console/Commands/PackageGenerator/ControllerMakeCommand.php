@@ -95,7 +95,7 @@ class ControllerMakeCommand extends \Illuminate\Routing\Console\ControllerMakeCo
         ];
 
         if ($this->option('requests')) {
-            $namespace = $this->argument('package') . '\\Http\\Requests';
+            $namespace = $this->packageNamespace . '\\Http\\Requests';
 
             [$storeRequestClass, $updateRequestClass] = $this->generateFormRequests(
                 $modelClass, $storeRequestClass, $updateRequestClass

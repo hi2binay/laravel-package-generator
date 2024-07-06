@@ -11,7 +11,7 @@ class TestMakeCommand extends \Illuminate\Foundation\Console\TestMakeCommand
      *
      * @var string
      */
-    protected $signature = 'package:test {package} {name} {--u|unit} {--pest} {--f|force} ';
+    protected $signature = 'package:test {package} {name} {--u|unit} {--pest} {--phpunit} {--f|force} ';
 
     /**
      * The console command description.
@@ -29,8 +29,9 @@ class TestMakeCommand extends \Illuminate\Foundation\Console\TestMakeCommand
     protected function getPath($name)
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
+        $pkg_dir = Str::kebab(str_replace('-',' ', trim($this->argument('package'))));
 
-        return base_path('/packages/' . $this->argument('package') . '/tests/') . str_replace('\\', '/', $name) . '.php';
+        return base_path('/packages/' . $pkg_dir . '/tests/') . str_replace('\\', '/', $name) . '.php';
     }
 
     /**
@@ -40,7 +41,7 @@ class TestMakeCommand extends \Illuminate\Foundation\Console\TestMakeCommand
      */
     protected function rootNamespace()
     {
-        return $this->argument('package') . '\\Tests';
+        return Str::studly(str_replace('-',' ', trim($this->argument('package')))) . '\\Tests';
     }
 
 }

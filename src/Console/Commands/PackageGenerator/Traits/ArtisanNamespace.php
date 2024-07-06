@@ -8,6 +8,16 @@ trait  ArtisanNamespace
 {
 
     /**
+     * package dir
+     */
+    public $packageDir = null;
+
+    /**
+     * Package namespace
+     */
+    public $packageNamespace = null;
+
+    /**
      * Get the destination class path.
      *
      * @param string $name
@@ -16,8 +26,9 @@ trait  ArtisanNamespace
     protected function getPath($name): string
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
+        $this->packageDir = Str::kebab(str_replace('-',' ', trim($this->argument('package'))));
 
-        return base_path('/packages/') . $this->argument('package') . '/src/' . str_replace('\\', '/', $name) . '.php';
+        return base_path('/packages/') . $this->packageDir . '/src/' . str_replace('\\', '/', $name) . '.php';
     }
 
     /**
@@ -27,7 +38,9 @@ trait  ArtisanNamespace
      */
     protected function rootNamespace(): string
     {
+        $this->packageNamespace = Str::studly(str_replace('-',' ', trim($this->argument('package'))));
+        $this->packageDir = Str::kebab(str_replace('-',' ', trim($this->argument('package'))));
 
-        return $this->argument('package') . '\\';
+        return $this->packageNamespace . '\\';
     }
 }

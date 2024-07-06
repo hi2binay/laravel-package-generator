@@ -10,7 +10,7 @@ class PackageCommand extends MakeCommand
      *
      * @var string
      */
-    protected $signature = 'package:make {package} {--plain}  {--force}';
+    protected $signature = 'package:make {package}';
 
     /**
      * The console command description.
@@ -24,10 +24,9 @@ class PackageCommand extends MakeCommand
      */
     public function handle(): void
     {
+        $package_name = trim($this->argument('package'));
         $this->packageGenerator->setConsole($this)
-            ->setPackage($this->argument('package'))
-            ->setPlain($this->option('plain'))
-            ->setForce($this->option('force'))
+            ->configurePackage($package_name)
             ->generate();
     }
 }

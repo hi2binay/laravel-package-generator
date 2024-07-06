@@ -27,8 +27,8 @@ class FactoryMakeCommand extends \Illuminate\Database\Console\Factories\FactoryM
      */
     protected function rootNamespace(): string
     {
-
-        return $this->argument('package') . '\\Database\Factories\\';
+        $namespace = Str::studly(str_replace('-',' ', trim($this->argument('package'))));
+        return $namespace . '\\Database\Factories\\';
     }
 
     /**
@@ -46,8 +46,8 @@ class FactoryMakeCommand extends \Illuminate\Database\Console\Factories\FactoryM
             : $this->qualifyModel($this->guessModelName($name));
 
         $model = class_basename($namespaceModel);
-
-        $namespace = $this->argument('package') . '\\Database\Factories';
+        $package_namespace = Str::studly(str_replace('-',' ', trim($this->argument('package'))));
+        $namespace = $package_namespace . '\\Database\Factories';
 
         $replace = [
             'Database\\Factories' => $namespace,
@@ -84,7 +84,8 @@ class FactoryMakeCommand extends \Illuminate\Database\Console\Factories\FactoryM
             return $model;
         }
 
-        return $this->argument('package') . '\\Models\\' . $model;
+        $package_namespace = Str::studly(str_replace('-',' ', trim($this->argument('package'))));
+        return $package_namespace . '\\Models\\' . $model;
     }
 
     /**
@@ -96,7 +97,8 @@ class FactoryMakeCommand extends \Illuminate\Database\Console\Factories\FactoryM
     protected function getPath($name): string
     {
         $name = (string)Str::of($name)->replaceFirst($this->rootNamespace(), '')->finish('Factory');
+        $package_dir = Str::kebab(str_replace('-',' ', trim($this->argument('package'))));
 
-        return base_path('packages/') . str_replace('\\', '/', $this->argument('package')) . '/database/factories/' . str_replace('\\', '/', $name) . '.php';
+        return base_path('packages/') . $package_dir . '/database/factories/' . str_replace('\\', '/', $name) . '.php';
     }
 }

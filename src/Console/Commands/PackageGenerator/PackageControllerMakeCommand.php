@@ -33,7 +33,7 @@ class PackageControllerMakeCommand extends MakeCommand
     protected function getStubVariables(): array
     {
         return [
-            'NAMESPACE' => $this->getClassNamespace($this->argument('package') . '/Http/Controllers'),
+            'NAMESPACE' => $this->getClassNamespace($this->packageNamespace . '/Http/Controllers'),
             'CLASS' => $this->getClassName(),
             'LOWER_NAME' => $this->getLowerName(),
         ];
@@ -44,7 +44,7 @@ class PackageControllerMakeCommand extends MakeCommand
      */
     protected function getSourceFilePath(): string
     {
-        $path = base_path('packages/' . $this->argument('package')) . '/src/Http/Controllers';
+        $path = base_path('packages/' . $this->packageFolder) . '/src/Http/Controllers';
 
         return $path . '/' . $this->getClassName() . '.php';
     }

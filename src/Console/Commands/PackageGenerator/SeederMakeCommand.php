@@ -28,7 +28,7 @@ class SeederMakeCommand extends \Illuminate\Database\Console\Seeds\SeederMakeCom
     protected function rootNamespace(): string
     {
 
-        return $this->argument('package') . '\\Database\Seeders\\';
+        return Str::studly(str_replace('-',' ', trim($this->argument('package')))) . '\\Database\Seeders\\';
     }
 
     /**
@@ -40,7 +40,8 @@ class SeederMakeCommand extends \Illuminate\Database\Console\Seeds\SeederMakeCom
     protected function getPath($name): string
     {
         $name = str_replace('\\', '/', Str::replaceFirst($this->rootNamespace(), '', $name));
-        $package_db_path = base_path('packages/') . str_replace('\\', '/', $this->argument('package')) . '/database';
+        $pkg_dir = Str::kebab(str_replace('-',' ', trim($this->argument('package'))));
+        $package_db_path = base_path('packages/') . $pkg_dir . '/database';
         if (is_dir($package_db_path . '/seeds')) {
             return $package_db_path . '/seeds/' . $name . '.php';
         }

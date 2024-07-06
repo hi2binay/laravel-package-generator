@@ -21,7 +21,7 @@ class ListenerMakeCommand extends \Illuminate\Foundation\Console\ListenerMakeCom
      *
      * @var string
      */
-    protected $description = 'Create a new listener.';
+    protected $description = 'Create a package new listener.';
 
     /**
      * Build the class with the given name.
@@ -45,7 +45,7 @@ class ListenerMakeCommand extends \Illuminate\Foundation\Console\ListenerMakeCom
             ['DummyEvent', '{{ event }}'], $event, parent::buildClass($name)
         );
 
-        return str_replace('App\\Events', $this->argument('package') . '\\Events', str_replace(
+        return str_replace('BKP\LaravelPackageGenerator\\Events', $this->argument('package') . '\\Events', str_replace(
             ['DummyFullEvent', '{{ eventNamespace }}'], trim($event, '\\'), $stub
         ));
     }

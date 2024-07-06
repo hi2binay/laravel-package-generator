@@ -28,7 +28,7 @@ class PolicyMakeCommand extends \Illuminate\Foundation\Console\PolicyMakeCommand
     protected function rootNamespace(): string
     {
 
-        return $this->argument('package') . '\\';
+        return Str::studly(str_replace('-',' ', trim($this->argument('package')))) . '\\';
     }
 
     /**
@@ -40,7 +40,7 @@ class PolicyMakeCommand extends \Illuminate\Foundation\Console\PolicyMakeCommand
     protected function getPath($name): string
     {
         $name = (string)Str::of($name)->replaceFirst($this->rootNamespace(), '');
-
-        return base_path('packages/') . str_replace('\\', '/', $this->argument('package')) . '/src/' . str_replace('\\', '/', $name) . '.php';
+        $pkg_dir = Str::kebab(str_replace('-',' ', trim($this->argument('package'))));
+        return base_path('packages/') . $pkg_dir . '/src/' . str_replace('\\', '/', $name) . '.php';
     }
 }
