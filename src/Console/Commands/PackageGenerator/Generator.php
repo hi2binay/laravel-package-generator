@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\PackageGenerator;
+namespace BKP\LaravelPackageGenerator\Console\Commands\PackageGenerator;
 
 use Illuminate\Config\Repository as Config;
 use Illuminate\Console\Command;
