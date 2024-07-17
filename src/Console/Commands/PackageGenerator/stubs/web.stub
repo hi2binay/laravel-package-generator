@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['web'], 'prefix' => '/$LOWER_NAME$', 'namespace' => '$PACKAGE_NAMESPACE$', 'as' => '$LOWER_NAME$.'], function () {
+Route::group(['middleware' => ['web'], 'prefix' => '/$LOWER_NAME$/', 'namespace' => '$PACKAGE_NAMESPACE$', 'as' => '$LOWER_PACKAGE_NAME$.'], function () {
 
 });
