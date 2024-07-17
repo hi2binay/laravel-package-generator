@@ -29,9 +29,15 @@ class TestMakeCommand extends \Illuminate\Foundation\Console\TestMakeCommand
     protected function getPath($name)
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
-        $pkg_dir = Str::kebab(str_replace('-',' ', trim($this->argument('package'))));
+        $packageName = trim($this->argument('package'));
+        $pkg_array = explode("\\", $packageName);
+        $pkg_replace_array = [];
+        foreach($pkg_array as $a) {
+            $pkg_replace_array[] = Str::kebab($a);
+        }
+        $package_dir = implode(DIRECTORY_SEPARATOR, $pkg_replace_array);
 
-        return base_path('/packages/' . $pkg_dir . '/tests/') . str_replace('\\', '/', $name) . '.php';
+        return base_path('packages'.DIRECTORY_SEPARATOR . $package_dir . DIRECTORY_SEPARATOR.'tests'.DIRECTORY_SEPARATOR) . str_replace('\\', '/', $name) . '.php';
     }
 
     /**
@@ -41,7 +47,7 @@ class TestMakeCommand extends \Illuminate\Foundation\Console\TestMakeCommand
      */
     protected function rootNamespace()
     {
-        return Str::studly(str_replace('-',' ', trim($this->argument('package')))) . '\\Tests';
+        return Str::studly(trim($this->argument('package'))) . '\\Tests';
     }
 
 }

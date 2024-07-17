@@ -43,8 +43,8 @@ class TestCaseMakeCommand extends MakeCommand
      */
     protected function getSourceFilePath()
     {
-        $path = base_path('packages/' . $this->packageFolder) . '/tests';
+        $path = base_path('packages'.DIRECTORY_SEPARATOR . $this->packageFolder) . DIRECTORY_SEPARATOR.'tests';
 
-        return $path . '/TestCase.php';
+        return $path . DIRECTORY_SEPARATOR.'TestCase.php';
     }
 }

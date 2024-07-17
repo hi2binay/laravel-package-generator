@@ -1,6 +1,7 @@
 <?php
 
 namespace BKP\LaravelPackageGenerator\Console\Commands\PackageGenerator;
+use Illuminate\Support\Str;
 
 class ModelContractMakeCommand extends MakeCommand
 {
@@ -42,9 +43,16 @@ class ModelContractMakeCommand extends MakeCommand
      */
     protected function getSourceFilePath()
     {
-        $path = base_path('packages/' . $this->argument('package')) . '/src/Contracts';
+        $packageName = trim($this->argument('package'));
+        $pkg_array = explode("\\", $packageName);
+        $pkg_replace_array = [];
+        foreach($pkg_array as $a) {
+            $pkg_replace_array[] = Str::kebab($a);
+        }
+        $package_dir = implode(DIRECTORY_SEPARATOR, $pkg_replace_array);
+        $path = base_path('packages'.DIRECTORY_SEPARATOR . $package_dir) . DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Contracts';
 
-        return $path . '/' . $this->getClassName() . '.php';
+        return $path . DIRECTORY_SEPARATOR . $this->getClassName() . '.php';
     }
 
 }

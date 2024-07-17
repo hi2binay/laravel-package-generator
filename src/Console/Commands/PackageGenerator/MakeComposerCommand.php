@@ -2,6 +2,8 @@
 
 namespace BKP\LaravelPackageGenerator\Console\Commands\PackageGenerator;
 
+use Illuminate\Support\Str;
+
 class MakeComposerCommand extends MakeCommand
 {
     /**
@@ -32,12 +34,15 @@ class MakeComposerCommand extends MakeCommand
     protected function getStubVariables()
     {
 
+        $pkg = explode("\\", $this->packageName);
+        $name = Str::studly($pkg[0]);
+
         return [
-            'PACKAGE_NAME' => 'bkp/' .$this->packageFolder,
+            'PACKAGE_NAME' => 'bkp/' .str_replace('\\','',Str::kebab($this->packageNamespace)),
             'PACKAGE_NAMESPACE' => $this->getClassNamespace(str_replace('\\', '\\\\', $this->packageNamespace) . '\\\\'),
             'PHP_VERSION' => PHP_VERSION,
             'PACKAGE_DESCRIPTION' => 'This is package description',
-            'PROVIDER_NAME' => basename($this->packageNamespace)
+            'PROVIDER_NAME' => $name
         ];
     }
 
@@ -46,8 +51,8 @@ class MakeComposerCommand extends MakeCommand
      */
     protected function getSourceFilePath()
     {
-        $path = base_path('packages/' . $this->packageFolder);
+        $path = base_path('packages'.DIRECTORY_SEPARATOR . $this->packageFolder);
 
-        return $path . '/' . 'composer.json';
+        return $path . DIRECTORY_SEPARATOR . 'composer.json';
     }
 }

@@ -82,8 +82,13 @@ class MakeCommand extends Command
     {
         $this->packageName = $packageName;
         $this->packageNamespace = Str::studly($packageName);
-        $this->packageFolder = Str::kebab($this->packageName);
-        
+        $pkg_array = explode("\\",$this->packageName);
+        $pkg_replace_array = [];
+        foreach($pkg_array as $a) {
+            $pkg_replace_array[] = Str::kebab($a);
+        }
+        $this->packageFolder = implode(DIRECTORY_SEPARATOR, $pkg_replace_array);
+
     }
 
     /**
@@ -123,7 +128,7 @@ class MakeCommand extends Command
      */
     public function getStudlyName(): string
     {
-        return class_basename($this->packageNamespace);
+        return $this->packageNamespace;
     }
 
     /**
@@ -131,7 +136,7 @@ class MakeCommand extends Command
      */
     protected function getLowerName(): string
     {
-        return strtolower(class_basename($this->packageNamespace));
+        return strtolower($this->packageNamespace);
     }
 
     /**

@@ -40,7 +40,14 @@ class PolicyMakeCommand extends \Illuminate\Foundation\Console\PolicyMakeCommand
     protected function getPath($name): string
     {
         $name = (string)Str::of($name)->replaceFirst($this->rootNamespace(), '');
-        $pkg_dir = Str::kebab(str_replace('-',' ', trim($this->argument('package'))));
-        return base_path('packages/') . $pkg_dir . '/src/' . str_replace('\\', '/', $name) . '.php';
+        $packageName = trim($this->argument('package'));
+        $pkg_array = explode("\\", $packageName);
+        $pkg_replace_array = [];
+        foreach($pkg_array as $a) {
+            $pkg_replace_array[] = Str::kebab($a);
+        }
+        $package_dir = implode(DIRECTORY_SEPARATOR, $pkg_replace_array);
+
+        return base_path('packages/') . $package_dir . '/src/' . str_replace('\\', '/', $name) . '.php';
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Migrations\MigrateMakeCommand;
 use Illuminate\Database\Migrations\MigrationCreator;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Composer;
+use Illuminate\Support\Str;
 
 class MigrationMakeCommand extends MigrateMakeCommand
 {
@@ -48,6 +49,14 @@ class MigrationMakeCommand extends MigrateMakeCommand
      */
     protected function getMigrationPath(): string
     {
-        return base_path('packages/') . str_replace('\\', '/', $this->argument('package')) . '/database/migrations';
+        $packageName = trim($this->argument('package'));
+        $pkg_array = explode("\\", $packageName);
+        $pkg_replace_array = [];
+        foreach($pkg_array as $a) {
+            $pkg_replace_array[] = Str::kebab($a);
+        }
+        $package_dir = implode(DIRECTORY_SEPARATOR, $pkg_replace_array);
+
+        return base_path('packages'.DIRECTORY_SEPARATOR) . $package_dir . DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR.'migrations';
     }
 }

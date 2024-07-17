@@ -25,10 +25,10 @@ trait  ArtisanNamespace
      */
     protected function getPath($name): string
     {
+        $this->setDirAndNamespace();
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
-        $this->packageDir = Str::kebab(str_replace('-',' ', trim($this->argument('package'))));
 
-        return base_path('/packages/') . $this->packageDir . '/src/' . str_replace('\\', '/', $name) . '.php';
+        return base_path(DIRECTORY_SEPARATOR.'packages'.DIRECTORY_SEPARATOR) . $this->packageDir . DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR . str_replace('\\', '/', $name) . '.php';
     }
 
     /**
@@ -38,9 +38,22 @@ trait  ArtisanNamespace
      */
     protected function rootNamespace(): string
     {
-        $this->packageNamespace = Str::studly(str_replace('-',' ', trim($this->argument('package'))));
-        $this->packageDir = Str::kebab(str_replace('-',' ', trim($this->argument('package'))));
+        $this->setDirAndNamespace();
 
         return $this->packageNamespace . '\\';
+    }
+
+    /**
+     * set package dir and namespace
+     */
+    public function setDirAndNamespace() {
+        $packageName = trim($this->argument('package'));
+        $this->packageNamespace = Str::studly($packageName);
+        $pkg_array = explode("\\", $packageName);
+        $pkg_replace_array = [];
+        foreach($pkg_array as $a) {
+            $pkg_replace_array[] = Str::kebab($a);
+        }
+        $this->packageDir = implode(DIRECTORY_SEPARATOR, $pkg_replace_array);
     }
 }

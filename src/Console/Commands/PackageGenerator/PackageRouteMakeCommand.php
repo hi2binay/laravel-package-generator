@@ -1,7 +1,7 @@
 <?php
 
 namespace BKP\LaravelPackageGenerator\Console\Commands\PackageGenerator;
-
+use Illuminate\Support\Str;
 
 class PackageRouteMakeCommand extends MakeCommand
 {
@@ -32,10 +32,13 @@ class PackageRouteMakeCommand extends MakeCommand
      */
     protected function getStubVariables()
     {
+        $pkg_array = explode("\\",$this->packageName);
+        $route_as = strtolower(implode('-', $pkg_array));
         return [
             'CONTROLLER_CLASS_NAME' => $this->getClassNamespace($this->packageNamespace . '/Http/Controllers/' . $this->getStudlyName() . 'Controller'),
-            'LOWER_NAME' => $this->getLowerName(),
-            'PACKAGE_NAMESPACE' =>$this->getStudlyName()
+            'LOWER_NAME' => str_replace('\\','/',$this->getLowerName()),
+            'PACKAGE_NAMESPACE' =>$this->getStudlyName(),
+            'LOWER_PACKAGE_NAME' => $route_as
         ];
     }
 
@@ -44,8 +47,8 @@ class PackageRouteMakeCommand extends MakeCommand
      */
     protected function getSourceFilePath()
     {
-        $path = base_path('packages/' . $this->packageFolder) . '/routes';
+        $path = base_path('packages'.DIRECTORY_SEPARATOR . $this->packageFolder) . DIRECTORY_SEPARATOR.'routes';
 
-        return $path . '/web.php';
+        return $path . DIRECTORY_SEPARATOR.'web.php';
     }
 }

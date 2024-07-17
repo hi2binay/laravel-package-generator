@@ -44,8 +44,8 @@ class PackageControllerMakeCommand extends MakeCommand
      */
     protected function getSourceFilePath(): string
     {
-        $path = base_path('packages/' . $this->packageFolder) . '/src/Http/Controllers';
+        $path = base_path('packages'.DIRECTORY_SEPARATOR . $this->packageFolder) . DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Http'.DIRECTORY_SEPARATOR.'Controllers';
 
-        return $path . '/' . $this->getClassName() . '.php';
+        return $path . DIRECTORY_SEPARATOR . $this->getClassName() . '.php';
     }
 }

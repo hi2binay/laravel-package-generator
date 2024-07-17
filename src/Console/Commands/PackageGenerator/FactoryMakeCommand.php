@@ -27,7 +27,7 @@ class FactoryMakeCommand extends \Illuminate\Database\Console\Factories\FactoryM
      */
     protected function rootNamespace(): string
     {
-        $namespace = Str::studly(str_replace('-',' ', trim($this->argument('package'))));
+        $namespace = Str::studly(trim($this->argument('package')));
         return $namespace . '\\Database\Factories\\';
     }
 
@@ -97,8 +97,13 @@ class FactoryMakeCommand extends \Illuminate\Database\Console\Factories\FactoryM
     protected function getPath($name): string
     {
         $name = (string)Str::of($name)->replaceFirst($this->rootNamespace(), '')->finish('Factory');
-        $package_dir = Str::kebab(str_replace('-',' ', trim($this->argument('package'))));
-
-        return base_path('packages/') . $package_dir . '/database/factories/' . str_replace('\\', '/', $name) . '.php';
+        $packageName = trim($this->argument('package'));
+        $pkg_array = explode("\\", $packageName);
+        $pkg_replace_array = [];
+        foreach($pkg_array as $a) {
+            $pkg_replace_array[] = Str::kebab($a);
+        }
+        $package_dir = implode(DIRECTORY_SEPARATOR, $pkg_replace_array);
+        return base_path('packages'.DIRECTORY_SEPARATOR) . $package_dir . DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR.'factories'.DIRECTORY_SEPARATOR . str_replace('\\', '/', $name) . '.php';
     }
 }

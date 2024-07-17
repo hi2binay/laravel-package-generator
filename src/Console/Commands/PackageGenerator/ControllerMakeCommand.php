@@ -3,7 +3,7 @@
 namespace BKP\LaravelPackageGenerator\Console\Commands\PackageGenerator;
 
 
-use BKP\LaravelPackageGenerator\Console\Commands\PackageGenerator\Traits\ArtisanNamespace;
+use App\Console\Commands\PackageGenerator\Traits\ArtisanNamespace;
 use function Laravel\Prompts\confirm;
 
 class ControllerMakeCommand extends \Illuminate\Routing\Console\ControllerMakeCommand

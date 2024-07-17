@@ -2,7 +2,7 @@
 
 namespace BKP\LaravelPackageGenerator\Console\Commands\PackageGenerator;
 
-use BKP\LaravelPackageGenerator\Console\Commands\PackageGenerator\Traits\ArtisanNamespace;
+use App\Console\Commands\PackageGenerator\Traits\ArtisanNamespace;
 
 class ResourceMakeCommand extends \Illuminate\Foundation\Console\ResourceMakeCommand
 {

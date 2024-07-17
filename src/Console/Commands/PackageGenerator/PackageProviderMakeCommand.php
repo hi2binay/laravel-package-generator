@@ -46,7 +46,7 @@ class PackageProviderMakeCommand extends MakeCommand
      */
     protected function getSourceFilePath()
     {
-        $path = base_path('packages/' . $this->packageFolder) . '/src/Providers';
+        $path = base_path('packages'.DIRECTORY_SEPARATOR . $this->packageFolder) . DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Providers';
 
         return $path . '/' . $this->getClassName() . '.php';
     }
