@@ -2,7 +2,7 @@
 
 namespace BKP\LaravelPackageGenerator\Console\Commands\PackageGenerator;
 
-use App\Console\Commands\PackageGenerator\Traits\ArtisanNamespace;
+use BKP\LaravelPackageGenerator\Console\Commands\PackageGenerator\Traits\ArtisanNamespace;
 use Illuminate\Support\Str;
 
 class ListenerMakeCommand extends \Illuminate\Foundation\Console\ListenerMakeCommand
@@ -45,7 +45,7 @@ class ListenerMakeCommand extends \Illuminate\Foundation\Console\ListenerMakeCom
             ['DummyEvent', '{{ event }}'], $event, parent::buildClass($name)
         );
 
-        return str_replace('App\\Events', $this->argument('package') . '\\Events', str_replace(
+        return str_replace('App\\Events', $this->packageNamespace . '\\Events', str_replace(
             ['DummyFullEvent', '{{ eventNamespace }}'], trim($event, '\\'), $stub
         ));
     }

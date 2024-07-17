@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\PackageGenerator;
+namespace BKP\LaravelPackageGenerator\Console\Commands\PackageGenerator;
 use Illuminate\Support\Str;
 
 class ViewMakeCommand extends \Illuminate\Foundation\Console\ViewMakeCommand
