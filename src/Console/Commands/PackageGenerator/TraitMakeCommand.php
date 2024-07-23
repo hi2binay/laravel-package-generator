@@ -39,6 +39,7 @@ class TraitMakeCommand extends \Illuminate\Foundation\Console\TraitMakeCommand
      */
     protected function getPath($name): string
     {
+		$name = str_replace("Traits\\",'', $name);
         $name = (string)Str::of($name)->replaceFirst($this->rootNamespace(), '');
         $packageName = trim($this->argument('package'));
         $pkg_array = explode("\\", $packageName);
