@@ -32,6 +32,7 @@ use BKP\LaravelPackageGenerator\Console\Commands\PackageGenerator\{CastMakeComma
     SeederMakeCommand,
     TestCaseMakeCommand,
     TestMakeCommand,
+	TraitMakeCommand,
     ViewMakeCommand};
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
@@ -79,6 +80,7 @@ class LaravelPackageGeneratorServiceProvider extends ServiceProvider
                 SeederMakeCommand::class,
                 TestCaseMakeCommand::class,
                 TestMakeCommand::class,
+				TraitMakeCommand::class,
                 ViewMakeCommand::class
             ]);
         }
